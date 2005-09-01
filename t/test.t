@@ -3,7 +3,7 @@
 use strict;
 use warnings FATAL => 'all';
 
-use Test::More tests => 31;
+use Test::More tests => 36;
 
 use_ok( 'Class::DataStore' );
 
@@ -57,6 +57,19 @@ is_deeply( \@returned, \@array );
 @array = qw( 1 );
 @returned = $store->get( 'one' );
 is_deeply( \@returned, \@array );
+
+my %hash = ( a => 1, b => 2 );
+$store->set( hash => \%hash );
+$returned = $store->get( 'hash' );
+is( ref $returned, 'HASH' );
+is( $returned->{a}, 1 );
+
+my %returned = $store->get( 'hash' );
+is( $returned{a}, 1 );
+
+@returned = $store->get( 'hash' );
+is( $returned[0], 'a' );
+is( $returned[1], 1 );
 
 # set and false/undef values
 $store->five( undef );
